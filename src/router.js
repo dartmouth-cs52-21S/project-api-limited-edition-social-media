@@ -100,9 +100,10 @@ router.post('/signup', async (req, res) => {
 // search route
 router.get('/search', async (req, res) => {
   try {
-    const users = await UserController.search();
+    const users = await UserController.search(req.name);
     res.json(users);
   } catch (error) {
+    // res.json(req);
     res.status(500).send({ error: error.toString() });
   }
 });
