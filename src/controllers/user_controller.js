@@ -42,18 +42,6 @@ export const signup = async ({
   return tokenForUser(user);
 };
 
-// export const search = (user) => {}
-
-export const search = async (name) => {
-  // All posts
-  try {
-    const user = await User.find({ $text: { $search: name } });
-    return user;
-  } catch (error) {
-    throw new Error(`get users error: ${error}`);
-  }
-};
-
 export const addArchive = async (userid, postid) => {
   try {
     // add post to archivedFeed by id
@@ -97,3 +85,12 @@ function tokenForUser(user) {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
 }
+
+export const search = async (name) => {
+  try {
+    const user = await User.find({ username: new RegExp(name, 'gi') });
+    return user;
+  } catch (error) {
+    throw new Error(`get users error: ${error}`);
+  }
+};
